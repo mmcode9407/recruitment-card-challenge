@@ -2,22 +2,66 @@ extends defaults/layout.pug
 include defaults/mixins.pug
 block content
     .container
-        .card__preview
-            .card__preview--number XXXX XXXX XXXX XXXX
-            .card__preview--holder Jan Kowalski
-        form.card__form
-            input.card__form--input(type="text" placeholder="Card number")
-            label(for="card__form--select")
-            select#card__form--select
-                option 01
-                option 02
-                option 03
-                option 04
-                option 05
-                option 06
-                option 07
-                option 08
-                option 09
-                option 10
-                option 11
-                option 12
+        .card
+            .card__inner
+                .card__side.card__side--front
+                    +addPicture('background.jpg', 'card__side-background')
+
+                    .card__logos
+                        +addPicture('chip.png')
+                        .card__logo
+
+                    .card__number
+                        each _ in Array(16)
+                            span.card__number-digit #
+
+                    .card__footer
+                        .card__info.card__info--full 
+                            p.card__info-title Card Holder
+                            p.card__info-value#card-holder Ad Soyad
+
+                        .card__info 
+                            p.card__info-title Expires
+                            p.card__info-value
+                                span#card-expires-month MM
+                                span /
+                                span#card-expires-year YY
+
+                .card__side.card__side--back
+                    +addPicture('background.jpg', 'card__side-background')
+
+                    .card__strip
+
+                    .card__info.card__info--cvv
+                        p.card__info-title CVV
+                        p.card__info-value#card-cvv XXX
+
+                    .card__logo.card__logo--back
+                
+        form.form.form__card
+            .form__field
+                label(for="form-number") Card number
+                input#form-number(type="number" placeholder="Card number" maxlength="16")
+
+            .form__field
+                label(for="form-name") Card Name
+                input#form-name(type="text" placeholder="Card name")
+
+            .form__row
+                .form__field.form__field--select
+                    label(for="form-select") Expiration date
+                    .form__select-group
+                        select#form-month
+                            option(value="" disabled selected) Month
+                            - for (let i = 1; i <= 12; i++)
+                                option= String(i).padStart(2, '0')
+                        select#form-year
+                            option(value="" disabled selected) Year
+                            - for (let i = 2025; i <= 2030; i++)
+                                option= i
+
+                .form__field.form__field--cvv 
+                    label(for="form-cvv") CVV
+                    input#form-cvv(type="number" placeholder="CVV" maxlength="4")
+
+            button.form__button(type="submit") Submit

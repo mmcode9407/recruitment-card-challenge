@@ -91,9 +91,44 @@ const updateCardNumber = () => {
 };
 
 const updateCardName = () => {
-  const value = cardNameInput.value.trim() || "Jan Kowalski";
+  const value = cardNameInput.value.trim();
 
-  cardNameDisplay.textContent = value;
+  if (!value) {
+    cardNameDisplay.textContent = "Ad Soyad";
+    return;
+  }
+
+  const currentSpans = cardNameDisplay.querySelectorAll("span");
+
+  if (!currentSpans.length) {
+    cardNameDisplay.textContent = "";
+  }
+
+  const newChars = value.split("");
+
+  while (currentSpans.length > newChars.length) {
+    cardNameDisplay.removeChild(currentSpans[currentSpans.length - 1]);
+  }
+
+  newChars.forEach((char, index) => {
+    let span;
+
+    if (index < currentSpans.length) {
+      span = currentSpans[index];
+      span.textContent = char;
+    } else {
+      span = document.createElement("span");
+
+      span.textContent = char;
+      span.classList.add("rotateLeft");
+
+      cardNameDisplay.appendChild(span);
+    }
+
+    if (char === " ") {
+      span.style.marginRight = "0.5em";
+    }
+  });
 };
 
 const updateCardCVV = () => {
